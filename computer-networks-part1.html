@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Networks · Class XII</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0f0f;
+    --paper: #faf9f6;
+    --warm: #f5f0e8;
+    --accent: #c8411a;
+    --accent2: #1a6bc8;
+    --muted: #6b6860;
+    --border: #e2ddd6;
+    --success: #1a8c4e;
+    --card: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,249,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .nav-links {
+    display: flex; gap: 0.25rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px;
+    transition: all 0.15s;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--ink);
+    background: var(--warm);
+  }
+  .quiz-btn-nav {
+    background: var(--accent) !important;
+    color: white !important;
+  }
+  .quiz-btn-nav:hover { opacity: 0.88; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 7rem 3rem 4rem;
+    max-width: 800px; margin: 0 auto;
+    animation: fadeUp 0.8s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    background: rgba(200,65,26,0.08);
+    border: 1px solid rgba(200,65,26,0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex; gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .stat { display: flex; flex-direction: column; }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.6rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.18s;
+    border: none;
+    font-family: 'Instrument Sans', sans-serif;
+  }
+  .btn-primary { background: var(--ink); color: white; }
+  .btn-primary:hover { background: #333; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--ink); background: var(--warm); }
+  .btn-accent { background: var(--accent); color: white; }
+  .btn-accent:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* SECTION */
+  .section {
+    padding: 5rem 0;
+    max-width: 860px; margin: 0 auto;
+    padding-left: 2rem; padding-right: 2rem;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 2.5rem;
+    line-height: 1.1;
+  }
+
+  /* CONCEPT CARD */
+  .concept-grid {
+    display: grid; gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .concept-item {
+    background: var(--card);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 1rem;
+  }
+  .concept-item:hover { background: var(--warm); }
+  .concept-term {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .concept-def {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .concept-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .concept-expanded {
+    display: none;
+    padding: 1rem 1.5rem 1.5rem;
+    background: var(--warm);
+    border-top: 1px solid var(--border);
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+    grid-column: 1 / -1;
+  }
+  .concept-expanded.open { display: block; }
+
+  /* FEYNMAN CARDS */
+  .feynman-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .feynman-header {
+    padding: 1.2rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .feynman-header:hover { background: var(--warm); }
+  .feynman-emoji { font-size: 1.5rem; flex-shrink: 0; }
+  .feynman-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .feynman-subtitle {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
+  .feynman-toggle {
+    margin-left: auto;
+    font-size: 1rem;
+    color: var(--muted);
+    transition: transform 0.25s;
+  }
+  .feynman-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .feynman-body.open { display: block; }
+  .feynman-body p { font-size: 0.92rem; color: #333; line-height: 1.75; margin-top: 1rem; }
+  .feynman-body p:first-child { margin-top: 1rem; }
+  .feynman-body strong { color: var(--ink); }
+  .feynman-body .analogy {
+    background: rgba(200,65,26,0.05);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  /* TOPOLOGY VISUALIZER */
+  .topo-tabs {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .topo-tab {
+    padding: 0.5rem 1.2rem;
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    transition: all 0.15s;
+    font-family: 'Instrument Sans', sans-serif;
+  }
+  .topo-tab.active {
+    background: var(--ink); color: white; border-color: var(--ink);
+  }
+  .topo-tab:hover:not(.active) { border-color: var(--ink); color: var(--ink); }
+  .topo-display {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    min-height: 320px;
+    display: flex; flex-direction: column;
+  }
+  .topo-canvas-wrap {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem 0;
+  }
+  .topo-canvas-wrap svg { width: 100%; max-width: 500px; height: 200px; }
+  .topo-info-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .topo-pro, .topo-con {
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+  .topo-pro-title { font-weight: 600; color: var(--success); margin-bottom: 0.4rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .topo-con-title { font-weight: 600; color: var(--accent); margin-bottom: 0.4rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .topo-pro li, .topo-con li { margin-left: 1rem; color: var(--muted); margin-bottom: 0.2rem; }
+
+  /* SWITCHING */
+  .switching-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+  }
+  .switch-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .switch-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+  .switch-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .switch-card.circuit::before { background: #e8a020; }
+  .switch-card.message::before { background: var(--accent2); }
+  .switch-card.packet::before { background: var(--accent); }
+  .switch-card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+  }
+  .switch-card-analogy {
+    font-size: 0.82rem;
+    color: var(--muted);
+    background: var(--warm);
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    margin-bottom: 0.8rem;
+    font-style: italic;
+  }
+  .switch-card-body { font-size: 0.85rem; color: #444; line-height: 1.65; }
+
+  /* TRANSMISSION MEDIA TABLE */
+  .media-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 0.82rem;
+    margin-bottom: 2rem;
+  }
+  .media-table th {
+    background: var(--warm);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .media-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: #333;
+    line-height: 1.5;
+  }
+  .media-table tr:last-child td { border-bottom: none; }
+  .media-table tr:hover td { background: var(--warm); }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+  }
+  .badge-green { background: rgba(26,140,78,0.1); color: var(--success); }
+  .badge-red { background: rgba(200,65,26,0.1); color: var(--accent); }
+  .badge-blue { background: rgba(26,107,200,0.1); color: var(--accent2); }
+
+  /* IP / MAC ADDRESS */
+  .addr-demo {
+    background: var(--ink);
+    color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 2rem;
+  }
+  .addr-demo h3 {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.5rem;
+  }
+  .addr-row { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .addr-box {
+    flex: 1; min-width: 200px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 1.2rem;
+  }
+  .addr-type { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .addr-value { font-size: 1.1rem; color: #7ee8a2; letter-spacing: 0.08em; }
+  .addr-detail { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem; }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+  .compare-table th {
+    background: var(--ink);
+    color: white;
+    padding: 0.8rem 1.2rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+  .compare-table td {
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    color: #333;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: var(--warm); }
+  .compare-table td:first-child { font-weight: 600; color: var(--ink); width: 30%; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px; background: var(--border);
+    margin: 0; width: 100%;
+  }
+
+  /* INFO CALLOUT */
+  .callout {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    display: flex; gap: 0.8rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: #444;
+  }
+  .callout-note { background: rgba(26,107,200,0.04); border-color: rgba(26,107,200,0.2); }
+  .callout-warn { background: rgba(200,65,26,0.04); border-color: rgba(200,65,26,0.2); }
+  .callout-icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+
+  /* QUIZ */
+  #quiz { padding-top: 5rem; }
+  .quiz-wrap {
+    max-width: 860px; margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+  .quiz-header { margin-bottom: 3rem; }
+  .quiz-progress {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .quiz-progress-bar {
+    flex: 1; height: 4px;
+    background: var(--border);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 100px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .quiz-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .quiz-q {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    display: none;
+    animation: fadeUp 0.4s ease both;
+  }
+  .quiz-q.active { display: block; }
+  .quiz-q-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+  }
+  .case-badge {
+    display: inline-block;
+    background: rgba(200,65,26,0.1);
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    margin-left: 0.5rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .quiz-q-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    line-height: 1.45;
+  }
+  .quiz-case-context {
+    background: var(--warm);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.65;
+    font-style: italic;
+  }
+  .quiz-options {
+    display: flex; flex-direction: column; gap: 0.6rem;
+    margin-top: 1.2rem;
+  }
+  .quiz-opt {
+    padding: 0.85rem 1.2rem;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--ink);
+    transition: all 0.15s;
+    background: var(--paper);
+    display: flex; align-items: center; gap: 0.8rem;
+    font-family: 'Instrument Sans', sans-serif;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: var(--ink); background: var(--warm); }
+  .quiz-opt-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--muted);
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .quiz-opt.correct { border-color: var(--success); background: rgba(26,140,78,0.05); }
+  .quiz-opt.correct .quiz-opt-letter { background: var(--success); color: white; }
+  .quiz-opt.wrong { border-color: var(--accent); background: rgba(200,65,26,0.05); }
+  .quiz-opt.wrong .quiz-opt-letter { background: var(--accent); color: white; }
+  .quiz-opt.dim { opacity: 0.4; }
+  .quiz-explanation {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--warm);
+    border-radius: 8px;
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .quiz-explanation.show { display: block; }
+  .quiz-explanation strong { color: var(--ink); }
+  .quiz-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 2rem;
+  }
+  .quiz-score {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .quiz-score.show { display: block; }
+  .score-number {
+    font-family: 'Fraunces', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .score-label { font-size: 0.9rem; color: var(--muted); margin-bottom: 2rem; }
+  .score-detail {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .score-stat {
+    background: var(--warm);
+    border-radius: 10px;
+    padding: 1.2rem;
+  }
+  .score-stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .score-stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+  .score-correct .score-stat-num { color: var(--success); }
+  .score-wrong .score-stat-num { color: var(--accent); }
+
+  /* QUICK REFERENCE */
+  .qref-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+  }
+  .qref-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+  }
+  .qref-card h4 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .qref-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.84rem;
+  }
+  .qref-item:last-child { border-bottom: none; }
+  .qref-item-term { color: var(--ink); font-weight: 500; }
+  .qref-item-val { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.78rem; }
+
+  /* BAUD CALCULATOR */
+  .calc-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .calc-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+  .calc-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1rem; }
+  .calc-field { flex: 1; min-width: 120px; }
+  .calc-field label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; font-weight: 500; }
+  .calc-field input, .calc-field select {
+    width: 100%; padding: 0.6rem 0.8rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .calc-field input:focus, .calc-field select:focus { border-color: var(--ink); }
+  .calc-result {
+    background: var(--warm);
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    color: var(--ink);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .calc-result-val { font-size: 1.2rem; font-weight: 500; color: var(--accent); }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding-left: 0.5rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: -2.4rem; top: 0.35rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--paper);
+  }
+  .timeline-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+  .timeline-event {
+    font-size: 0.88rem;
+    color: var(--ink);
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .timeline-detail { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* NETWORK TYPES PANEL */
+  .ntype-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+  }
+  .ntype-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: default;
+  }
+  .ntype-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+  .ntype-emoji { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+  .ntype-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .ntype-full { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.6rem; font-family: 'DM Mono', monospace; }
+  .ntype-desc { font-size: 0.84rem; color: #444; line-height: 1.6; }
+  .ntype-range {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    background: var(--warm);
+    color: var(--muted);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-top: 0.6rem;
+  }
+
+  /* COMMUNICATION MODES */
+  .modes-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .mode-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .mode-visual { font-size: 2.5rem; margin-bottom: 0.6rem; }
+  .mode-name {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .mode-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 4rem;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .quiz-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .modes-row { grid-template-columns: 1fr; }
+    .topo-info-row { grid-template-columns: 1fr; }
+    nav { display: none; }
+    .score-detail { grid-template-columns: 1fr; }
+    .addr-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Networks.XII</div>
+  <ul class="nav-links">
+    <li><a href="#basics">Basics</a></li>
+    <li><a href="#types">Types</a></li>
+    <li><a href="#internet">Internet</a></li>
+    <li><a href="#media">Media</a></li>
+    <li><a href="#topologies">Topologies</a></li>
+    <li><a href="#addressing">Addressing</a></li>
+    <li><a href="#quiz" class="quiz-btn-nav">Quiz</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-chip">Class XII · Computer Science</div>
+  <h1>Computer<br><em>Networks</em><br>Part One</h1>
+  <p class="hero-sub">Everything stripped down to what actually matters. No jargon. Pure clarity. Built for exam mastery.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">9</span>
+      <span class="stat-label">Core Topics</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">30</span>
+      <span class="stat-label">Quiz Questions</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">Case Studies</span>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <a href="#basics" class="btn btn-primary">Start Learning →</a>
+    <a href="#quiz" class="btn btn-outline">Take the Quiz</a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 1: BASICS -->
+<section class="section" id="basics">
+  <div class="section-label">01 — What is a Network?</div>
+  <h2 class="section-title">The Fundamentals</h2>
+
+  <div class="feynman-card">
+    <div class="feynman-header" onclick="toggleFeynman(this)">
+      <div class="feynman-emoji">🏘️</div>
+      <div>
+        <div class="feynman-title">What is a Computer Network?</div>
+        <div class="feynman-subtitle">Explain it like you're 10 years old</div>
+      </div>
+      <div class="feynman-toggle">▾</div>
+    </div>
+    <div class="feynman-body">
+      <p>Imagine a neighbourhood where every house has a mailbox. If you live alone on an island, you can't send or receive letters. But connect all the houses with roads — now everyone can share things.</p>
+      <div class="analogy">💡 A computer network is like a neighbourhood of roads, but for computers. Each computer is a "house," and the network is the roads between them.</div>
+      <p><strong>Formal definition:</strong> Two or more autonomous computing devices connected together so they can exchange information and share resources (printers, files, internet connections).</p>
+      <p>The keyword is <strong>autonomous</strong> — each computer can work independently. A network just makes them able to talk to each other.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">Why build a network? The honest answer:</h3>
+  <div class="compare-table" style="margin-bottom:1.5rem;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="background:var(--ink);color:white;padding:.7rem 1rem;font-size:.8rem;text-align:left;">Advantage</th>
+          <th style="background:var(--ink);color:white;padding:.7rem 1rem;font-size:.8rem;text-align:left;">Real-life meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;">Share resources</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:var(--muted);">One printer for 20 computers — much cheaper than 20 printers</td></tr>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;background:var(--warm);">Share software</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:var(--muted);background:var(--warm);">Buy 1 license, install on server, everyone uses it</td></tr>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;">Share storage</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:var(--muted);">Access files from any machine on the network</td></tr>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;background:var(--warm);">Communication</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:var(--muted);background:var(--warm);">Email, chat, video calls — all network-dependent</td></tr>
+        <tr><td style="padding:.7rem 1rem;font-weight:600;">Cost reduction</td><td style="padding:.7rem 1rem;color:var(--muted);">Sharing cuts costs — resource sharing cuts costs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠️</span>
+    <span><strong>Key Disadvantage to remember:</strong> Security risk — if the server or central node has a virus, it can spread to all connected computers. Networks are also harder to manage and require specialist staff.</span>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">Components of a Network — The 7 Building Blocks</h3>
+  <div class="concept-grid">
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Host / Node</div>
+        <div class="concept-def">Any computer attached to the network seeking to use or share resources</div>
+      </div>
+      <div class="concept-icon">💻</div>
+      <div class="concept-expanded">Every device on a network — your laptop, phone, printer — is a <strong>node</strong>. When it can be a client or server (i.e., it participates actively), it's called a <strong>host</strong>.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Server</div>
+        <div class="concept-def">A host that provides services or resources to other hosts (clients)</div>
+      </div>
+      <div class="concept-icon">🖥️</div>
+      <div class="concept-expanded">A server's only job is to serve. File servers share files, print servers manage printers, web servers host websites. A computer becomes a server as soon as it is attached to a network and starts serving.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Client</div>
+        <div class="concept-def">A host computer that requests services from a server</div>
+      </div>
+      <div class="concept-icon">📱</div>
+      <div class="concept-expanded">Your laptop browsing the web is a <strong>client</strong> — it sends requests ("give me this webpage") to a server. The server responds. This is the <strong>client-server model</strong>.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">NIC (Network Interface Card)</div>
+        <div class="concept-def">Hardware card giving each device a unique physical identity on the network</div>
+      </div>
+      <div class="concept-icon">🔌</div>
+      <div class="concept-expanded">Every NIC has a factory-assigned <strong>MAC address</strong> — a 6-byte (48-bit) unique number. No two NICs in the world have the same MAC. Also called NIU (Network Interface Unit) or TAP (Terminal Access Point).</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Communication Channel</div>
+        <div class="concept-def">The physical or wireless medium over which data travels</div>
+      </div>
+      <div class="concept-icon">📡</div>
+      <div class="concept-expanded">Two types: <strong>Wired</strong> (twisted-pair, coaxial, optical fiber) and <strong>Wireless</strong> (radio waves, microwaves, satellites, infrared). Wired = guided media. Wireless = unguided media.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Software (Protocol)</div>
+        <div class="concept-def">Rules that all parties on a network agree to follow for communication</div>
+      </div>
+      <div class="concept-icon">📋</div>
+      <div class="concept-expanded">Without rules, two computers trying to talk would be like two people speaking different languages. A <strong>protocol</strong> is the agreed-upon language and set of rules. Example: TCP/IP, HTTP, FTP.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Network OS &amp; Services</div>
+        <div class="concept-def">Software enabling networking tasks: DNS, file sharing, VoIP</div>
+      </div>
+      <div class="concept-icon">⚙️</div>
+      <div class="concept-expanded">A <strong>Network Operating System</strong> is a specialised OS that handles networking tasks. Network services include DNS (Domain Name System — converts website names to IP addresses), file sharing, VoIP (Voice over IP calls like WhatsApp).</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 2: TYPES OF NETWORKS -->
+<section class="section" id="types">
+  <div class="section-label">02 — Network Types</div>
+  <h2 class="section-title">LAN, WAN, MAN & PAN</h2>
+
+  <p style="color:var(--muted);margin-bottom:2rem;line-height:1.7;">Networks are classified by <strong>geographical spread</strong> — how far they physically extend. Think of it as zoom levels on a map.</p>
+
+  <div class="ntype-grid">
+    <div class="ntype-card">
+      <span class="ntype-emoji">🏠</span>
+      <div class="ntype-name">PAN</div>
+      <div class="ntype-full">Personal Area Network</div>
+      <div class="ntype-desc">Your personal bubble of devices. Bluetooth connects your phone to your earbuds, smartwatch, and laptop — all within your reach.</div>
+      <div class="ntype-range">Range: ~10 metres</div>
+    </div>
+    <div class="ntype-card">
+      <span class="ntype-emoji">🏢</span>
+      <div class="ntype-name">LAN</div>
+      <div class="ntype-full">Local Area Network</div>
+      <div class="ntype-desc">Your school or office building. Computers share one printer, one internet connection. Uses Ethernet cables or WiFi. Fast and cheap to set up.</div>
+      <div class="ntype-range">Range: up to 1 km</div>
+    </div>
+    <div class="ntype-card">
+      <span class="ntype-emoji">🏙️</span>
+      <div class="ntype-name">MAN</div>
+      <div class="ntype-full">Metropolitan Area Network</div>
+      <div class="ntype-desc">An entire city. Like broadband internet services connecting multiple offices across a city. Bigger than LAN, smaller than WAN.</div>
+      <div class="ntype-range">Range: 30–40 km (a city)</div>
+    </div>
+    <div class="ntype-card">
+      <span class="ntype-emoji">🌍</span>
+      <div class="ntype-name">WAN</div>
+      <div class="ntype-full">Wide Area Network</div>
+      <div class="ntype-desc">Connects cities, countries, continents. LANs connected across large distances form a WAN. The Internet is the world's largest WAN.</div>
+      <div class="ntype-range">Range: Worldwide</div>
+    </div>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="callout-icon">📌</span>
+    <span><strong>Exam Trap:</strong> The Internet is a WAN. The Web (World Wide Web) is a <em>part</em> of the Internet — not the whole Internet. Internet = infrastructure. Web = a service running on it.</span>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">LAN vs WAN — The Key Differences</h3>
+  <table class="compare-table">
+    <thead><tr><th>Feature</th><th>LAN</th><th>WAN</th></tr></thead>
+    <tbody>
+      <tr><td>Coverage</td><td>Small area (building)</td><td>Very large area (country/globe)</td></tr>
+      <tr><td>Setup Cost</td><td>Cheaper</td><td>Much more expensive</td></tr>
+      <tr><td>Network Type</td><td>Usually single network</td><td>Network of many networks</td></tr>
+      <tr><td>Primary Use</td><td>Resource &amp; info sharing</td><td>Communication across distances</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">Peer-to-Peer vs Client-Server</h3>
+  <div class="switching-cards">
+    <div class="switch-card" style="border-top:3px solid var(--accent2);">
+      <div class="switch-card-title">Peer-to-Peer (P2P)</div>
+      <div class="switch-card-analogy">🤝 "Everyone is equal — I can give you a file, you can give me one."</div>
+      <div class="switch-card-body">No dedicated server. Every computer can be both a client and a server. Works well for small networks (up to 10 computers). Easy to set up but hard to secure. BitTorrent is a famous P2P example.</div>
+    </div>
+    <div class="switch-card" style="border-top:3px solid var(--accent);">
+      <div class="switch-card-title">Client-Server</div>
+      <div class="switch-card-analogy">🏦 "There's a bank (server). You go to the bank (client) whenever you need money."</div>
+      <div class="switch-card-body">A dedicated server manages everything. Clients request, server responds. More secure, centrally managed. Used in large networks (schools, companies). Also called <strong>Master-Slave</strong> network.</div>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <thead><tr><th>Feature</th><th>Client-Server</th><th>P2P Network</th></tr></thead>
+    <tbody>
+      <tr><td>Security</td><td>Server controls security</td><td>No central control</td></tr>
+      <tr><td>Management</td><td>Dedicated team needed</td><td>Anyone can manage</td></tr>
+      <tr><td>Dependency</td><td>Clients depend on server</td><td>No dependency</td></tr>
+      <tr><td>Performance</td><td>Can be upgraded (powerful)</td><td>Slows if machines slow</td></tr>
+      <tr><td>Backup</td><td>All backed up on server</td><td>Each user does own backup</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 3: INTERNET -->
+<section class="section" id="internet">
+  <div class="section-label">03 — The Internet</div>
+  <h2 class="section-title">How the Internet Actually Works</h2>
+
+  <div class="feynman-card">
+    <div class="feynman-header" onclick="toggleFeynman(this)">
+      <div class="feynman-emoji">🌐</div>
+      <div>
+        <div class="feynman-title">What is the Internet?</div>
+        <div class="feynman-subtitle">The world's biggest network of networks</div>
+      </div>
+      <div class="feynman-toggle">▾</div>
+    </div>
+    <div class="feynman-body">
+      <p>Imagine every city has its own internal phone system (a LAN). To call someone in another city, you need to connect city systems together. The Internet is exactly this — it connects millions of smaller networks into one giant super-network.</p>
+      <div class="analogy">💡 The Internet is a worldwide network of computer networks — each network runs by a different company/institution, interconnected at "peering points" using a common language: TCP/IP.</div>
+      <p><strong>How it works:</strong></p>
+      <p>1. Your data is broken into small pieces called <strong>Packets</strong>. Each packet is numbered (1, 2, 3...).</p>
+      <p>2. Packets are sent to the destination's address. They may take different routes.</p>
+      <p>3. The destination reassembles them in the correct order. Lost packet? Ask for it again.</p>
+      <p><strong>TCP/IP = the engine:</strong> TCP breaks data into packets and reassembles them. IP routes each packet to the correct destination.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">The Evolution of the Internet</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">1961–62</div>
+      <div class="timeline-event">JCR Licklider — "Galactic Network" concept</div>
+      <div class="timeline-detail">The seed idea: computers talking to each other globally</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1969</div>
+      <div class="timeline-event">ARPANET launched</div>
+      <div class="timeline-detail">US Defense connected computers at UCLA, SRI, and US Defense — the birth of networking</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1971–72</div>
+      <div class="timeline-event">Email invented by Ray Tomlinson</div>
+      <div class="timeline-detail">The @ symbol for email addresses was introduced</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1973</div>
+      <div class="timeline-event">TCP/IP invented by Vinton Cerf &amp; Bob Kahn</div>
+      <div class="timeline-detail">The common language all Internet computers use</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1983</div>
+      <div class="timeline-event">DNS (Domain Name System) introduced</div>
+      <div class="timeline-detail">Converts website names (google.com) to IP addresses</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1989</div>
+      <div class="timeline-event">ARPANET + NSFnet merge = The Internet</div>
+      <div class="timeline-detail">Jan 1, 1983 celebrated as unofficial Internet birthday (TCP/IP adopted as standard)</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1990</div>
+      <div class="timeline-event">Tim Berners-Lee invents WWW, HTML, URL</div>
+      <div class="timeline-detail">The Web makes the Internet visual and usable for everyone</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1992</div>
+      <div class="timeline-event">Internet Society (ISOC) formed; 1M+ hosts</div>
+      <div class="timeline-detail">Internet becomes global and open to all</div>
+    </div>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="callout-icon">🔑</span>
+    <span><strong>Key terms:</strong> <strong>Gateway</strong> = a device that connects dissimilar networks. <strong>Backbone</strong> = the central interconnecting structure of the Internet (like the spine of a human — everything branches from it). <strong>InterSpace</strong> = futuristic client-server software allowing real-time audio, video, and text chat in dynamic 3D environments.</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 4: SWITCHING -->
+<section class="section" id="switching">
+  <div class="section-label">04 — Switching Techniques</div>
+  <h2 class="section-title">How Data Travels: 3 Methods</h2>
+
+  <p style="color:var(--muted);margin-bottom:2rem;line-height:1.7;">Switching = the technique by which data moves from one computer to another across a network. There are 3 fundamentally different approaches.</p>
+
+  <div class="switching-cards">
+    <div class="switch-card circuit">
+      <div class="switch-card-title">⚡ Circuit Switching</div>
+      <div class="switch-card-analogy">"Old telephone call — you dial, a dedicated line is reserved just for you for the entire conversation."</div>
+      <div class="switch-card-body">A complete physical connection is established <em>before</em> any data is sent. The path is locked and dedicated. If you don't use it, it's wasted. <br><br><strong>Example:</strong> Traditional telephone network.</div>
+    </div>
+    <div class="switch-card message">
+      <div class="switch-card-title">📦 Message Switching</div>
+      <div class="switch-card-analogy">"Like passing a baton in a relay race — the message hops from one switching office to the next, waiting at each stop."</div>
+      <div class="switch-card-body">The entire message is sent to a switching office, stored temporarily (buffered), then forwarded when a link is free. Also called <strong>Store-and-Forward</strong>. No size limit on messages. Slower but no dedicated path needed.</div>
+    </div>
+    <div class="switch-card packet">
+      <div class="switch-card-title">📮 Packet Switching</div>
+      <div class="switch-card-analogy">"Like a courier who breaks a heavy parcel into small boxes — each box takes the fastest available route to the destination."</div>
+      <div class="switch-card-body">Message is broken into <strong>fixed-size packets</strong>. Each packet travels independently and may take different routes. Reassembled at destination. Packets stored in <strong>RAM</strong> (not disk like message switching) → much faster. <br><br><strong>This is how the Internet works.</strong></div>
+    </div>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="callout-icon">📌</span>
+    <span><strong>Key difference — Packet vs Message switching:</strong> In message switching, data stored on disk (slower). In packet switching, fixed-size packets stored in RAM (faster). Packet switching improves throughput (performance).</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 5: DATA COMMUNICATION TERMINOLOGIES -->
+<section class="section" id="datacoms">
+  <div class="section-label">05 — Data Communication</div>
+  <h2 class="section-title">Key Terminologies &amp; Units</h2>
+
+  <div class="qref-grid">
+    <div class="qref-card">
+      <h4>Speed &amp; Capacity Units</h4>
+      <div class="qref-item"><span class="qref-item-term">Baud</span><span class="qref-item-val">signals/sec</span></div>
+      <div class="qref-item"><span class="qref-item-term">bps</span><span class="qref-item-val">bits per sec</span></div>
+      <div class="qref-item"><span class="qref-item-term">kbps</span><span class="qref-item-val">1,000 bps</span></div>
+      <div class="qref-item"><span class="qref-item-term">Mbps</span><span class="qref-item-val">1,000,000 bps</span></div>
+      <div class="qref-item"><span class="qref-item-term">Gbps</span><span class="qref-item-val">10⁹ bps</span></div>
+    </div>
+    <div class="qref-card">
+      <h4>Case Sensitivity Warning!</h4>
+      <div class="qref-item"><span class="qref-item-term">bps</span><span class="qref-item-val">bits/sec (lowercase b)</span></div>
+      <div class="qref-item"><span class="qref-item-term">Bps</span><span class="qref-item-val">Bytes/sec (uppercase B)</span></div>
+      <div class="qref-item"><span class="qref-item-term">kbps</span><span class="qref-item-val">kilo bits/sec (small k)</span></div>
+      <div class="qref-item"><span class="qref-item-term">Kbps</span><span class="qref-item-val">kilo Bytes/sec (cap K)</span></div>
+      <div class="qref-item"><span class="qref-item-term">mbps</span><span class="qref-item-val">mega bits (small m)</span></div>
+    </div>
+    <div class="qref-card">
+      <h4>Storage vs Speed</h4>
+      <div class="qref-item"><span class="qref-item-term">1 KB (storage)</span><span class="qref-item-val">= 1024 bytes</span></div>
+      <div class="qref-item"><span class="qref-item-term">1 MB (storage)</span><span class="qref-item-val">= 1024 KB</span></div>
+      <div class="qref-item"><span class="qref-item-term">1 kbps (speed)</span><span class="qref-item-val">= 1000 bps</span></div>
+      <div class="qref-item"><span class="qref-item-term">1 Mbps (speed)</span><span class="qref-item-val">= 1,000,000 bps</span></div>
+      <div class="qref-item"><span class="qref-item-term">1 byte</span><span class="qref-item-val">= 8 bits</span></div>
+    </div>
+  </div>
+
+  <!-- Data Rate Calculator -->
+  <div class="calc-box">
+    <h3>🧮 Data Rate Calculator</h3>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Practice solving exam-style problems like: "A file of X bytes needs to transfer in Y seconds — what data rate is needed?"</p>
+    <div class="calc-row">
+      <div class="calc-field">
+        <label>File size (sheets/files)</label>
+        <input type="number" id="fileCount" value="10" min="1">
+      </div>
+      <div class="calc-field">
+        <label>Size per file (bytes)</label>
+        <input type="number" id="fileSize" value="4800" min="1">
+      </div>
+      <div class="calc-field">
+        <label>Transfer time (seconds)</label>
+        <input type="number" id="transTime" value="20" min="1">
+      </div>
+      <div class="calc-field" style="min-width:100px;max-width:130px;">
+        <label>&nbsp;</label>
+        <button class="btn btn-primary" onclick="calcDataRate()" style="width:100%;padding:.6rem .8rem;font-size:.85rem;">Calculate</button>
+      </div>
+    </div>
+    <div class="calc-result">
+      <span>Required data rate:</span>
+      <span class="calc-result-val" id="calcOutput">18.75 Kbps</span>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:0 0 1rem;color:var(--ink);">Bandwidth</h3>
+  <div class="feynman-card">
+    <div class="feynman-header" onclick="toggleFeynman(this)">
+      <div class="feynman-emoji">🚗</div>
+      <div>
+        <div class="feynman-title">What is Bandwidth?</div>
+        <div class="feynman-subtitle">The highway analogy</div>
+      </div>
+      <div class="feynman-toggle">▾</div>
+    </div>
+    <div class="feynman-body">
+      <div class="analogy">💡 Think of bandwidth as the width of a road. A wider road = more cars at once. Higher bandwidth = more data per second.</div>
+      <p><strong>Technical definition:</strong> The difference between the highest and lowest frequencies a channel can carry. In digital systems: the maximum data speed (bps) the channel supports.</p>
+      <p><strong>High bandwidth channels</strong> → called <strong>broadband channels</strong> (like fibre optic, coaxial)<br>
+      <strong>Low bandwidth channels</strong> → called <strong>narrowband channels</strong> (like old telephone lines)</p>
+      <p>A video download needs far more bandwidth than a text email — it has more complex data.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">Communication Modes</h3>
+  <div class="modes-row">
+    <div class="mode-card">
+      <div class="mode-visual">→</div>
+      <div class="mode-name">Simplex</div>
+      <div class="mode-desc">One-way only. Like TV broadcast — signals go one direction. Station A sends, Station B only receives.</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-visual">⇄</div>
+      <div class="mode-name">Half-Duplex</div>
+      <div class="mode-desc">Both ways but NOT simultaneously. Like a walkie-talkie — one talks while the other listens.</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-visual">⇆</div>
+      <div class="mode-name">Full-Duplex</div>
+      <div class="mode-desc">Both ways simultaneously. Like a phone call — both people can speak and hear at the same time.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 6: TRANSMISSION MEDIA -->
+<section class="section" id="media">
+  <div class="section-label">06 — Transmission Media</div>
+  <h2 class="section-title">The Wires &amp; Waves of Networking</h2>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem;line-height:1.7;">Transmission media = the "roads" data travels on. Two categories: <strong>Guided (wired)</strong> — physical cables, and <strong>Unguided (wireless)</strong> — waves through the air.</p>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:var(--ink);">🔌 Guided (Wired) Media</h3>
+
+  <div class="feynman-card">
+    <div class="feynman-header" onclick="toggleFeynman(this)">
+      <div class="feynman-emoji">🔀</div>
+      <div>
+        <div class="feynman-title">Twisted Pair Cable (TPC)</div>
+        <div class="feynman-subtitle">Most common wiring — cheap, flexible, everyday</div>
+      </div>
+      <div class="feynman-toggle">▾</div>
+    </div>
+    <div class="feynman-body">
+      <p>Two identical copper wires twisted around each other. The twisting is genius — it cancels out <strong>crosstalk</strong> (when a signal bleeds from one wire to the adjacent wire and corrupts data).</p>
+      <div class="analogy">💡 Like two people holding hands and spinning — the spin cancels interference from outside distractions.</div>
+      <p><strong>UTP (Unshielded Twisted Pair)</strong> — cheapest, most common (Ethernet in schools/offices). Max 100m segment. Categories: CAT1→CAT8 (CAT5 = 1Gbps, CAT6 = 10Gbps).</p>
+      <p><strong>STP (Shielded Twisted Pair)</strong> — has a metal foil shield around pairs for extra protection from interference. Better than UTP but heavier and costlier. Max 100m segment.</p>
+      <p><strong>Disadvantages:</strong> High attenuation (signal weakens over distance), needs repeaters, not suitable for broadband (wide bandwidth) applications.</p>
+    </div>
+  </div>
+
+  <div class="feynman-card">
+    <div class="feynman-header" onclick="toggleFeynman(this)">
+      <div class="feynman-emoji">📺</div>
+      <div>
+        <div class="feynman-title">Coaxial Cable</div>
+        <div class="feynman-subtitle">The cable TV cable — better than twisted pair</div>
+      </div>
+      <div class="feynman-toggle">▾</div>
+    </div>
+    <div class="feynman-body">
+      <p>A solid copper core surrounded by insulation, a copper mesh shield, and an outer plastic jacket. Like an armoured data pipe.</p>
+      <div class="analogy">💡 Imagine a garden hose (copper core) wrapped in foam (insulation), then wire mesh (shield) — it's physically shielded against interference.</div>
+      <p><strong>Thicknet</strong> — thicker cable, up to 500m segments.<br>
+      <strong>Thinnet</strong> — thinner cable, max 185m segments, cheaper to install.</p>
+      <p><strong>Advantages:</strong> Better data transmission than TPC, can be used for broadband (multiple channels simultaneously, like cable TV), up to 400 Mbps bandwidth.</p>
+      <p><strong>Disadvantages:</strong> More expensive than TPC, not compatible with twisted pair.</p>
+    </div>
+  </div>
+
+  <div class="feynman-card">
+    <div class="feynman-header" onclick="toggleFeynman(this)">
+      <div class="feynman-emoji">💡</div>
+      <div>
+        <div class="feynman-title">Optical Fibre Cable</div>
+        <div class="feynman-subtitle">Light-speed data — the gold standard</div>
+      </div>
+      <div class="feynman-toggle">▾</div>
+    </div>
+    <div class="feynman-body">
+      <p>Thin strands of glass that carry data as pulses of <strong>light</strong>. LEDs or laser diodes send the light at one end. A photo-detector receives it at the other.</p>
+      <div class="analogy">💡 Like a mirror tube — light bounces off the walls (cladding reflects it back) and travels through the glass core at nearly the speed of light.</div>
+      <p><strong>3 layers:</strong> Core (glass/plastic) → Cladding (reflects light back) → Protective coating (outer jacket).</p>
+      <p><strong>Single-mode:</strong> One path for light. Up to 5 km, 10 Gbps bandwidth. Longer distance.<br>
+      <strong>Multimode:</strong> Multiple paths. Up to 1 km, 100 Gbps bandwidth. Higher speeds over shorter distances.</p>
+      <p><strong>Advantages:</strong> Zero electrical/magnetic interference, extremely high bandwidth, secure (nearly impossible to tap — must cut the wire), immune to weather, can carry multiple channels (TV + data simultaneously).</p>
+      <p><strong>Disadvantages:</strong> Very expensive, fragile, difficult to install and splice, most expensive of all cables.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">📡 Unguided (Wireless) Media</h3>
+
+  <div class="concept-grid">
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Microwave (Terrestrial)</div>
+        <div class="concept-def">Line-of-sight signals between towers — no cables needed for long distances</div>
+      </div>
+      <div class="concept-icon">📡</div>
+      <div class="concept-expanded"><strong>Works:</strong> Parabolic dish antennas on towers send a beam to another tower. Higher tower = further range (up to 100 km between towers). <strong>Line-of-sight</strong> — must see the next tower. <br><strong>Pros:</strong> No land acquisition cost, works over difficult terrain. <strong>Cons:</strong> Insecure, affected by rain/storms, limited bandwidth.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Satellite Microwave</div>
+        <div class="concept-def">Signal bounced off satellites at 22,300 miles above Earth</div>
+      </div>
+      <div class="concept-icon">🛰️</div>
+      <div class="concept-expanded"><strong>Works:</strong> Ground stations transmit signals to satellites (transponders). Satellites amplify and retransmit to other ground stations. Satellites in <strong>geostationary orbit</strong> (fixed position relative to Earth). <br><strong>Pros:</strong> Huge coverage area, works over oceans. <strong>Cons:</strong> Very expensive, high atmospheric losses above 30 GHz.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Radio Wave</div>
+        <div class="concept-def">Radio frequencies — omnidirectional, used for WiFi and mobile</div>
+      </div>
+      <div class="concept-icon">📻</div>
+      <div class="concept-expanded">Uses continuous sine waves. Each different radio signal uses a different sine wave frequency. <strong>Omnidirectional</strong> — spreads in all directions (unlike microwave which is directional). Used in WiFi, walkie-talkies, FM/AM radio. <strong>Cons:</strong> Insecure, affected by weather.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Infrared</div>
+        <div class="concept-def">Short-range line-of-sight — your TV remote is infrared</div>
+      </div>
+      <div class="concept-icon">🔴</div>
+      <div class="concept-expanded">Uses infrared light. Secure (cannot penetrate walls — can't be intercepted from outside a room). Used in TV remotes, PDAs, garage doors. <strong>Limitation:</strong> Must have line-of-sight, cannot penetrate walls, short range.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Bluetooth</div>
+        <div class="concept-def">Short-range wireless for PAN (Personal Area Networks)</div>
+      </div>
+      <div class="concept-icon">📶</div>
+      <div class="concept-expanded">Works at 2.400–2.483.5 GHz frequency band. Very short range (up to 30 feet / 10 m). Connects earbuds, keyboards, phones, laptops. Low power radio waves — that's why your battery barely drains. Perfect for PANs.</div>
+    </div>
+    <div class="concept-item" onclick="toggleConcept(this)">
+      <div>
+        <div class="concept-term">Laser</div>
+        <div class="concept-def">Ultra-fast, point-to-point — between buildings</div>
+      </div>
+      <div class="concept-icon">🔆</div>
+      <div class="concept-expanded">Much faster than microwave. Point-to-point (unidirectional). Uses a laser transmitter and photo-sensitive receiver at each end. Used between buildings on a campus. <strong>Disadvantage:</strong> Adversely affected by weather (fog, rain reduces signal).</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin:2rem 0 1rem;color:var(--ink);">Quick Comparison — Guided Media</h3>
+  <table class="media-table">
+    <thead>
+      <tr>
+        <th>Cable Type</th>
+        <th>Max Segment</th>
+        <th>Max Speed</th>
+        <th>Cost</th>
+        <th>Interference</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>UTP</strong></td>
+        <td>100 m</td>
+        <td>40 Gbps</td>
+        <td><span class="badge badge-green">Cheapest</span></td>
+        <td><span class="badge badge-red">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>STP</strong></td>
+        <td>100 m</td>
+        <td>500 Mbps</td>
+        <td><span class="badge badge-green">Cheap</span></td>
+        <td><span class="badge badge-blue">Moderate</span></td>
+      </tr>
+      <tr>
+        <td><strong>Coaxial (Thinnet)</strong></td>
+        <td>185 m</td>
+        <td>10 Mbps</td>
+        <td><span class="badge badge-blue">Moderate</span></td>
+        <td><span class="badge badge-green">Low</span></td>
+      </tr>
+      <tr>
+        <td><strong>Coaxial (Thicknet)</strong></td>
+        <td>500 m</td>
+        <td>10 Mbps</td>
+        <td><span class="badge badge-red">Expensive</span></td>
+        <td><span class="badge badge-green">None</span></td>
+      </tr>
+      <tr>
+        <td><strong>Fibre Optic (Single)</strong></td>
+        <td>Up to 5 km</td>
+        <td>10 Gbps</td>
+        <td><span class="badge badge-red">Expensive</span></td>
+        <td><span class="badge badge-green">None</span></td>
+      </tr>
+      <tr>
+        <td><strong>Fibre Optic (Multi)</strong></td>
+        <td>Up to 1 km</td>
+        <td>100 Gbps</td>
+        <td><span class="badge badge-red">Expensive</span></td>
+        <td><span class="badge badge-green">None</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 7: TOPOLOGIES -->
+<section class="section" id="topologies">
+  <div class="section-label">07 — Network Topologies</div>
+  <h2 class="section-title">How Nodes Are Arranged</h2>
+
+  <p style="color:var(--muted);margin-bottom:2rem;line-height:1.7;"><strong>Topology</strong> = the pattern of how nodes are interconnected. It affects cost, reliability, and how easy the network is to manage. Click a topology to explore it.</p>
+
+  <div class="topo-tabs">
+    <button class="topo-tab active" onclick="showTopo('star')">⭐ Star</button>
+    <button class="topo-tab" onclick="showTopo('bus')">🚌 Bus</button>
+    <button class="topo-tab" onclick="showTopo('ring')">💍 Ring</button>
+    <button class="topo-tab" onclick="showTopo('tree')">🌳 Tree</button>
+    <button class="topo-tab" onclick="showTopo('mesh')">🕸️ Mesh</button>
+  </div>
+
+  <div class="topo-display" id="topoDisplay">
+    <div class="topo-canvas-wrap" id="topoCanvas"></div>
+    <div class="topo-info-row">
+      <div class="topo-pro">
+        <div class="topo-pro-title">✓ Advantages</div>
+        <ul id="topoPros" style="list-style:disc;"></ul>
+      </div>
+      <div class="topo-con">
+        <div class="topo-con-title">✗ Disadvantages</div>
+        <ul id="topoCons" style="list-style:disc;"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-warn" style="margin-top:1.5rem;">
+    <span class="callout-icon">🎯</span>
+    <span><strong>Topology Selection Factors (exam essential):</strong> Cost · Cable length needed · Flexibility (easy to reconfigure) · Reliability (fault detection/isolation) · Future growth potential · Communication media used · Cruciality of work (military → fully connected, budget-conscious → bus)</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 8: IP & MAC -->
+<section class="section" id="addressing">
+  <div class="section-label">08 — Node Identification</div>
+  <h2 class="section-title">IP Address &amp; MAC Address</h2>
+
+  <p style="color:var(--muted);margin-bottom:2rem;line-height:1.7;">Every device on a network needs a unique identity. Two addresses do this — one logical, one physical.</p>
+
+  <div class="addr-demo">
+    <h3>Address Reference Card</h3>
+    <div class="addr-row">
+      <div class="addr-box">
+        <div class="addr-type">IPv4 Address (Logical)</div>
+        <div class="addr-value">123.101.16.90</div>
+        <div class="addr-detail">4 bytes (32 bits) · 4 octets · dotted decimal notation · up to 4.3 billion unique addresses</div>
+      </div>
+      <div class="addr-box">
+        <div class="addr-type">IPv6 Address (Logical)</div>
+        <div class="addr-value">2001:0DC8:E004:0001:0000:0000:0000:F00A</div>
+        <div class="addr-detail">16 bytes (128 bits) · 8 groups of hex · 340 undecillion unique addresses</div>
+      </div>
+    </div>
+    <div class="addr-row">
+      <div class="addr-box">
+        <div class="addr-type">MAC Address (Physical)</div>
+        <div class="addr-value">10:B5:03:63:2E:FC</div>
+        <div class="addr-detail">6 bytes (48 bits) · First 3 bytes = OUI (manufacturer) · Last 3 bytes = card number · Never changes · Assigned by NIC manufacturer</div>
+      </div>
+      <div class="addr-box">
+        <div class="addr-type">Key Difference</div>
+        <div class="addr-value" style="color:#93c5fd;font-size:0.9rem;">IP = Logical (can change)<br>MAC = Physical (permanent)</div>
+        <div class="addr-detail">IP changes when you connect to a different network. MAC is burned into the hardware forever.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare-table" style="margin-bottom:0;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead><tr><th style="background:var(--ink);color:white;padding:.7rem 1rem;font-size:.8rem;text-align:left;">Feature</th><th style="background:var(--ink);color:white;padding:.7rem 1rem;font-size:.8rem;text-align:left;">IP Address</th><th style="background:var(--ink);color:white;padding:.7rem 1rem;font-size:.8rem;text-align:left;">MAC Address</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--ink);">Type</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;">Logical (software)</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;">Physical (hardware)</td></tr>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--ink);background:var(--warm);">Size</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;background:var(--warm);">32 bits (IPv4) / 128 bits (IPv6)</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;background:var(--warm);">48 bits (6 bytes)</td></tr>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--ink);">Assigned by</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;">Network admin / ISP</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;">Manufacturer (at factory)</td></tr>
+        <tr><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--ink);background:var(--warm);">Can it change?</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;background:var(--warm);">Yes — changes per network</td><td style="padding:.7rem 1rem;border-bottom:1px solid var(--border);color:#444;background:var(--warm);">No — permanent</td></tr>
+        <tr><td style="padding:.7rem 1rem;font-weight:600;color:var(--ink);">Used for</td><td style="padding:.7rem 1rem;color:#444;">Routing data between networks</td><td style="padding:.7rem 1rem;color:#444;">Delivery within a network</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- QUIZ SECTION -->
+<section id="quiz">
+<div class="quiz-wrap">
+  <div class="quiz-header">
+    <div class="section-label">09 — Test Yourself</div>
+    <h2 class="section-title">30-Question Quiz</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem;">25 concept questions + 5 case-based board-style questions. Tap an option to answer, then see the explanation.</p>
+    <div class="quiz-progress">
+      <div class="quiz-counter" id="quizCounter">Q1 of 30</div>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
+      <div id="quizScore2" style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted);">Score: 0</div>
+    </div>
+  </div>
+
+  <div id="quizQuestions"></div>
+
+  <div class="quiz-score" id="quizFinalScore">
+    <div class="score-number" id="finalScoreNum">0</div>
+    <div class="score-label">out of 30 questions correct</div>
+    <div class="score-detail">
+      <div class="score-stat score-correct">
+        <div class="score-stat-num" id="finalCorrect">0</div>
+        <div class="score-stat-label">Correct</div>
+      </div>
+      <div class="score-stat score-wrong">
+        <div class="score-stat-num" id="finalWrong">0</div>
+        <div class="score-stat-label">Wrong</div>
+      </div>
+      <div class="score-stat">
+        <div class="score-stat-num" id="finalPct">0%</div>
+        <div class="score-stat-label">Score</div>
+      </div>
+    </div>
+    <div id="scoreMessage" style="font-size:.95rem;color:var(--muted);margin-bottom:2rem;font-style:italic;"></div>
+    <button class="btn btn-primary" onclick="restartQuiz()">Retake Quiz</button>
+  </div>
+
+  <div class="quiz-nav" id="quizNav">
+    <button class="btn btn-outline" onclick="prevQ()" id="prevBtn" style="display:none;">← Previous</button>
+    <div style="flex:1;"></div>
+    <button class="btn btn-primary" onclick="nextQ()" id="nextBtn">Next →</button>
+  </div>
+</div>
+</section>
+
+<footer>
+  Built for Class XII Computer Science · Computer Networks Part 1 · Feynman Method
+</footer>
+
+<script>
+// FEYNMAN TOGGLE
+function toggleFeynman(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.feynman-toggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// CONCEPT TOGGLE
+function toggleConcept(item) {
+  const expanded = item.querySelector('.concept-expanded');
+  if (!expanded) return;
+  const isOpen = expanded.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.concept-expanded.open').forEach(e => e.classList.remove('open'));
+  if (!isOpen) expanded.classList.add('open');
+}
+
+// TOPOLOGY DATA
+const topos = {
+  star: {
+    svg: `<svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="250" cy="100" r="22" fill="#0f0f0f" stroke="none"/>
+      <text x="250" y="105" text-anchor="middle" fill="white" font-size="10" font-family="DM Mono">HUB</text>
+      ${[[130,40],[370,40],[80,130],[420,130],[170,175],[330,175]].map(([x,y],i)=>`
+        <line x1="250" y1="100" x2="${x}" y2="${y}" stroke="#e2ddd6" stroke-width="2"/>
+        <circle cx="${x}" cy="${y}" r="14" fill="${i===2?'#c8411a':'#f5f0e8'}" stroke="#0f0f0f" stroke-width="1.5"/>
+        <text x="${x}" y="${y+4}" text-anchor="middle" fill="${i===2?'white':'#0f0f0f'}" font-size="9">PC</text>
+      `).join('')}
+    </svg>`,
+    pros: ['Easy to diagnose faults', 'One failed node = rest still work', 'Simple access protocol', 'Easy to add/remove nodes'],
+    cons: ['Long cable length needed (all nodes to center)', 'Central node failure = whole network down', 'Difficult to expand (run cable to center)']
+  },
+  bus: {
+    svg: `<svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+      <line x1="50" y1="100" x2="450" y2="100" stroke="#0f0f0f" stroke-width="3"/>
+      <rect x="30" y="92" width="20" height="16" rx="3" fill="#6b6860"/>
+      <text x="40" y="105" text-anchor="middle" fill="white" font-size="7">T</text>
+      <rect x="450" y="92" width="20" height="16" rx="3" fill="#6b6860"/>
+      <text x="460" y="105" text-anchor="middle" fill="white" font-size="7">T</text>
+      ${[[110,100],[190,100],[270,100],[350,100],[430,100]].map(([x,y],i)=>`
+        <line x1="${x}" y1="100" x2="${x}" y2="${i%2===0?55:145}" stroke="#e2ddd6" stroke-width="1.5"/>
+        <circle cx="${x}" cy="${i%2===0?42:158}" r="14" fill="${i===2?'#c8411a':'#f5f0e8'}" stroke="#0f0f0f" stroke-width="1.5"/>
+        <text x="${x}" y="${(i%2===0?42:158)+4}" text-anchor="middle" fill="${i===2?'white':'#0f0f0f'}" font-size="9">PC</text>
+      `).join('')}
+      <text x="250" y="185" text-anchor="middle" fill="#6b6860" font-size="10">T = Terminator</text>
+    </svg>`,
+    pros: ['Short cable length (cost-efficient)', 'Simple, resilient architecture', 'Easy to extend with repeaters'],
+    cons: ['Fault diagnosis is difficult', 'Fault isolation is difficult', 'All nodes must be "intelligent"', 'Repeater config needed for extension']
+  },
+  ring: {
+    svg: `<svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="250" cy="100" r="70" fill="none" stroke="#e2ddd6" stroke-width="2" stroke-dasharray="8 4"/>
+      ${[[250,30],[320,65],[320,135],[250,170],[180,135],[180,65]].map(([x,y],i)=>`
+        <circle cx="${x}" cy="${y}" r="14" fill="${i===0?'#c8411a':'#f5f0e8'}" stroke="#0f0f0f" stroke-width="1.5"/>
+        <text x="${x}" y="${y+4}" text-anchor="middle" fill="${i===0?'white':'#0f0f0f'}" font-size="9">PC</text>
+      `).join('')}
+      <text x="250" y="100" text-anchor="middle" fill="#c8411a" font-size="9" font-family="DM Mono">→TOKEN→</text>
+    </svg>`,
+    pros: ['Data travels in one direction only (less collision)', 'Token passing = orderly access', 'No central node dependency'],
+    cons: ['One broken node breaks the entire ring', 'Difficult to add/remove nodes', 'Slower than star for small networks']
+  },
+  tree: {
+    svg: `<svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="250" cy="25" r="16" fill="#0f0f0f"/>
+      <text x="250" y="29" text-anchor="middle" fill="white" font-size="8" font-family="DM Mono">Root</text>
+      <line x1="250" y1="41" x2="140" y2="80" stroke="#e2ddd6" stroke-width="2"/>
+      <line x1="250" y1="41" x2="360" y2="80" stroke="#e2ddd6" stroke-width="2"/>
+      <circle cx="140" cy="90" r="14" fill="#f5f0e8" stroke="#0f0f0f" stroke-width="1.5"/>
+      <text x="140" y="94" text-anchor="middle" fill="#0f0f0f" font-size="9">HUB</text>
+      <circle cx="360" cy="90" r="14" fill="#f5f0e8" stroke="#0f0f0f" stroke-width="1.5"/>
+      <text x="360" y="94" text-anchor="middle" fill="#0f0f0f" font-size="9">HUB</text>
+      ${[[80,145],[140,145],[200,145],[300,145],[360,145],[420,145]].map(([x,y],i)=>`
+        <line x1="${i<3?140:360}" y1="104" x2="${x}" y2="${y}" stroke="#e2ddd6" stroke-width="1.5"/>
+        <circle cx="${x}" cy="${y+14}" r="12" fill="${i===2?'#c8411a':'#faf9f6'}" stroke="#0f0f0f" stroke-width="1.5"/>
+        <text x="${x}" y="${y+18}" text-anchor="middle" fill="${i===2?'white':'#0f0f0f'}" font-size="8">PC</text>
+      `).join('')}
+    </svg>`,
+    pros: ['Point-to-point wiring for segments', 'Hierarchical — easy to manage departments', 'Flexible and scalable'],
+    cons: ['Backbone line breaks = entire segment down', 'More difficult to configure and wire', 'Segment length limited by cable type']
+  },
+  mesh: {
+    svg: `<svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+      ${(()=>{
+        const nodes=[[130,50],[370,50],[250,110],[130,170],[370,170]];
+        const lines=[];
+        for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++) lines.push(`<line x1="${nodes[i][0]}" y1="${nodes[i][1]}" x2="${nodes[j][0]}" y2="${nodes[j][1]}" stroke="#e2ddd6" stroke-width="1.5"/>`);
+        return lines.join('')+nodes.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="16" fill="${i===2?'#c8411a':'#f5f0e8'}" stroke="#0f0f0f" stroke-width="1.5"/><text x="${x}" y="${y+4}" text-anchor="middle" fill="${i===2?'white':'#0f0f0f'}" font-size="9">PC</text>`).join('');
+      })()}
+    </svg>`,
+    pros: ['Multiple routes = no single point of failure', 'Extremely reliable', 'Fault isolation is easy'],
+    cons: ['Most expensive (most cables)', 'Complex to install and manage', 'Used only where critical (e.g., military)']
+  }
+};
+
+function showTopo(name) {
+  const t = topos[name];
+  document.getElementById('topoCanvas').innerHTML = t.svg;
+  document.getElementById('topoPros').innerHTML = t.pros.map(p=>`<li>${p}</li>`).join('');
+  document.getElementById('topoCons').innerHTML = t.cons.map(c=>`<li>${c}</li>`).join('');
+  document.querySelectorAll('.topo-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.textContent.toLowerCase().includes(name));
+  });
+}
+showTopo('star');
+
+// DATA RATE CALCULATOR
+function calcDataRate() {
+  const count = parseFloat(document.getElementById('fileCount').value) || 1;
+  const size = parseFloat(document.getElementById('fileSize').value) || 1;
+  const time = parseFloat(document.getElementById('transTime').value) || 1;
+  const bits = count * size * 8;
+  const bps = bits / time;
+  let result;
+  if (bps >= 1000000) result = (bps/1000000).toFixed(2) + ' Mbps';
+  else if (bps >= 1000) result = (bps/1024).toFixed(2) + ' Kbps';
+  else result = bps.toFixed(0) + ' bps';
+  document.getElementById('calcOutput').textContent = result;
+}
+
+// QUIZ DATA
+const questions = [
+  {q:"What is a Computer Network?",opts:["A single computer with multiple monitors","Two or more autonomous computers connected to exchange information and share resources","A software application for video calling","A hardware device for storing data"],ans:1,exp:"A computer network is two or more <strong>autonomous</strong> computing devices connected together to exchange information and share resources. The key word is autonomous — each computer can work independently."},
+  {q:"Which device provides a unique physical address to every computer on a network?",opts:["Router","NIC (Network Interface Card)","Switch","Modem"],ans:1,exp:"The NIC (Network Interface Card) is hardware that gives every computer a unique MAC address — a 6-byte (48-bit) physical address assigned at the factory. No two NICs in the world share the same MAC address."},
+  {q:"What is the maximum coverage range of a LAN?",opts:["10 metres","1 kilometre","40 kilometres","Worldwide"],ans:1,exp:"A LAN (Local Area Network) covers a small area — typically within one building or campus — up to approximately 1 km. PANs cover ~10m, MANs cover cities (30-40 km), WANs cover worldwide."},
+  {q:"The Internet is an example of which type of network?",opts:["LAN","MAN","WAN","PAN"],ans:2,exp:"The Internet is the world's largest WAN (Wide Area Network). It spans multiple cities, countries, and continents. Note: The Web (WWW) is a <em>service</em> that runs on the Internet — not the Internet itself."},
+  {q:"Which switching technique uses 'store and forward' for entire messages?",opts:["Circuit Switching","Message Switching","Packet Switching","Cell Switching"],ans:1,exp:"Message Switching uses the <strong>store-and-forward</strong> principle — the entire message is stored at each switching office, then forwarded when a link is free. There is no size limit on messages. Data is stored on disk (slower than packet switching)."},
+  {q:"In packet switching, where are packets stored temporarily?",opts:["Hard disk","RAM (main memory)","CD-ROM","Flash memory"],ans:1,exp:"In packet switching, fixed-size packets are stored in <strong>RAM (main memory)</strong>, not on disk. This is why packet switching is faster than message switching — RAM access time is much lower than disk access time, improving throughput."},
+  {q:"What does TCP stand for in TCP/IP?",opts:["Terminal Control Protocol","Transmission Control Protocol","Transfer Communication Protocol","Tunneling Control Protocol"],ans:1,exp:"TCP = <strong>Transmission Control Protocol</strong>. TCP is responsible for dividing the file/message into packets at the source, and reassembling received packets at the destination. IP (Internet Protocol) handles routing each packet to the correct destination."},
+  {q:"Which transmission medium is immune to electrical and magnetic interference?",opts:["UTP Cable","STP Cable","Coaxial Cable","Optical Fibre"],ans:3,exp:"Optical Fibre transmits data as <strong>light pulses</strong>, not electrical signals. Since it uses light, it is completely immune to electrical and magnetic interference (EMI). This also makes it virtually impossible to tap without detection."},
+  {q:"What is 'Crosstalk' in twisted pair cables?",opts:["High-speed data transfer","Bleeding of signal from one wire to another causing corruption","A type of network protocol","Cable installation technique"],ans:1,exp:"Crosstalk is the <strong>bleeding of a signal from one wire to an adjacent wire</strong>, which corrupts the signal and causes network errors. Twisting the wire pairs together helps cancel out crosstalk (both internal and external interference)."},
+  {q:"A MAC address is how many bytes?",opts:["2 bytes","4 bytes","6 bytes","8 bytes"],ans:2,exp:"A MAC address is <strong>6 bytes (48 bits)</strong>. The first 3 bytes (24 bits) = OUI (Organisational Unique Identifier — manufacturer's code assigned by IEEE). The last 3 bytes (24 bits) = card number (assigned by the manufacturer)."},
+  {q:"Which topology has a central node (hub/switch) to which all other nodes connect?",opts:["Bus Topology","Ring Topology","Star Topology","Mesh Topology"],ans:2,exp:"In the <strong>Star Topology</strong>, all nodes connect to a central hub or switch. This is the most common modern topology (Ethernet networks). Advantage: one node failure doesn't affect others. Disadvantage: central node failure kills the entire network."},
+  {q:"In a bus topology, what absorbs signals at the ends of the cable?",opts:["Repeaters","Routers","Terminators","Switches"],ans:2,exp:"<strong>Terminators</strong> are placed at both ends of the bus cable. They absorb signals that reach the end, preventing them from reflecting back and causing interference. Without terminators, signals would bounce and corrupt data."},
+  {q:"IPv4 is a __ bit address written in __ notation.",opts:["16-bit, binary","32-bit, dotted decimal","48-bit, hexadecimal","128-bit, dotted decimal"],ans:1,exp:"IPv4 is a <strong>32-bit</strong> address written in <strong>dotted decimal notation</strong> — four octets (bytes) separated by periods. Example: 123.101.16.90. It can represent up to 4.3 billion (2³²) unique addresses."},
+  {q:"Which communication mode allows SIMULTANEOUS two-way communication?",opts:["Simplex","Half-Duplex","Full-Duplex","Multi-plex"],ans:2,exp:"<strong>Full-Duplex</strong> allows simultaneous two-way communication — both sides can send and receive at the same time. Example: a phone call. Half-duplex allows both directions but not simultaneously (walkie-talkie). Simplex is one-way only (TV broadcast)."},
+  {q:"What is the maximum segment length for UTP cable?",opts:["50 metres","100 metres","185 metres","500 metres"],ans:1,exp:"UTP (Unshielded Twisted Pair) cable has a maximum segment length of <strong>100 metres</strong>. STP also has 100m max. Thinnet coaxial = 185m, Thicknet coaxial = 500m."},
+  {q:"ARPANET was developed by:",opts:["NASA","U.S. Department of Defense","IBM","MIT alone"],ans:1,exp:"ARPANET was sponsored and developed by the <strong>U.S. Department of Defense</strong> (specifically ARPA — Advanced Research Projects Agency). It started in 1969 by connecting computers at UCLA, Stanford Research Institute (SRI), and US Defense."},
+  {q:"Which topology is a combination of bus and star topologies?",opts:["Ring Topology","Mesh Topology","Tree Topology","Fully Connected Topology"],ans:2,exp:"<strong>Tree Topology</strong> combines bus and star topologies. It has a hierarchical structure like an inverted tree — a root (backbone bus) with branches (star sub-networks). Best for hierarchical data flow (e.g., a company with departments)."},
+  {q:"The first three bytes of a MAC address represent:",opts:["The computer's IP address","The OUI — manufacturer's identifier assigned by IEEE","The country code","The network ID"],ans:1,exp:"The first 3 bytes (24 bits) of a MAC address are the <strong>OUI (Organisational Unique Identifier)</strong> — assigned by IEEE to the manufacturer. Example: Dell, Intel, Broadcom each have their own OUI. The last 3 bytes are the card number assigned by the manufacturer."},
+  {q:"In which switching technique is a complete physical path established BEFORE data is sent?",opts:["Message Switching","Packet Switching","Circuit Switching","Token Switching"],ans:2,exp:"<strong>Circuit Switching</strong> establishes a complete dedicated physical path between source and destination BEFORE any data is transmitted. Like an old telephone call — a copper path is reserved exclusively for you. Advantage: guaranteed quality. Disadvantage: wasteful if no data is being sent."},
+  {q:"IPv6 was introduced because:",opts:["IPv4 was too slow","IPv4 exhausted its address space (only 4.3 billion addresses)","IPv6 is cheaper","IPv4 was not secure"],ans:1,exp:"IPv4 can only support ~4.3 billion unique addresses (2³²). With billions of devices (phones, IoT, computers) connecting to the Internet, IPv4 addresses ran out. <strong>IPv6</strong> uses 128-bit addresses, supporting 340 undecillion unique addresses (2¹²⁸)."},
+  {q:"What is the baud rate?",opts:["Amount of data in megabytes per second","Number of signal changes (symbols) per second on a communication channel","Number of computers connected to a network","Frequency of electromagnetic waves"],ans:1,exp:"<strong>Baud</strong> is the unit measuring the information-carrying capacity of a communication channel. It equals the number of signal changes (symbols/bauds) per second. It is synonymous with bps (bits per second) in many digital systems."},
+  {q:"Which wireless medium is used in TV remotes and cannot penetrate walls?",opts:["Microwave","Radio Wave","Infrared","Bluetooth"],ans:2,exp:"<strong>Infrared</strong> transmits data using infrared light. It cannot penetrate walls (line-of-sight required), which actually makes it <em>secure</em> — signals stay within the room. Used in TV remotes, PDAs (Personal Digital Assistants), wireless speakers, and garage doors."},
+  {q:"A dedicated server exclusively for serving files on a network is called:",opts:["Web Server","Print Server","File Server","Mail Server"],ans:2,exp:"A <strong>File Server</strong> is a server exclusively dedicated to storing and serving files to client computers on the network. Other dedicated servers include: Print Server (manages printing), Web Server (hosts websites), Mail Server (handles email)."},
+  {q:"What does NSFnet stand for?",opts:["National Science Foundation network","Network Security Framework","National Software Framework","New Standard Format network"],ans:0,exp:"NSFnet = <strong>National Science Foundation network</strong>. It was a high-capacity academic network that, along with ARPANET, merged in 1989 to form the Internet. NSFnet allowed computers at universities and academic institutions to interconnect."},
+  {q:"PAN (Personal Area Network) typically covers a range of:",opts:["100 metres","1 kilometre","10 metres","40 kilometres"],ans:2,exp:"A PAN (Personal Area Network) covers a range of approximately <strong>10 metres</strong> — just within the reach of one person. Examples: Bluetooth connecting your phone to earbuds, smartwatch, or laptop. WiFi is used to extend PANs to larger areas."},
+
+  // CASE-BASED QUESTIONS
+  {q:"CASE: A new school has 200 computers spread across 3 buildings within a campus of 0.5 km. The school wants all computers to share one high-speed internet connection and one printer room. The IT budget is limited. Which network type AND topology is MOST suitable?",isCase:true,caseContext:"School campus: 200 computers · 3 buildings · 0.5 km area · Limited budget · Need: shared internet + shared printers",opts:["WAN with Mesh topology — provides maximum reliability","LAN with Star topology — within LAN range, star is cost-effective and manageable","MAN with Bus topology — cities use MAN","PAN with Ring topology — personal area works best"],ans:1,exp:"<strong>LAN</strong> is appropriate because the campus is under 1 km. <strong>Star topology</strong> is best because: (1) One faulty computer doesn't affect others, (2) Easy to manage and add computers, (3) Centralized control through hub/switch for shared resources. Bus would be cheaper but fault diagnosis is difficult for 200 computers. Mesh is too expensive."},
+  {q:"CASE: A company wants to send a 50 MB video file from its Mumbai office to its Delhi office. The network administrator must choose a switching technique. The video MUST arrive intact with all parts in the correct order, and the network must remain usable by other employees simultaneously. Which switching technique is best?",isCase:true,caseContext:"Mumbai → Delhi · 50 MB video file · Must arrive complete · Other employees using network simultaneously",opts:["Circuit Switching — reserves a dedicated line ensuring speed","Packet Switching — breaks file into packets, travels independently, uses shared bandwidth","Message Switching — stores entire file at each node and forwards it","No switching needed — direct cable connection"],ans:1,exp:"<strong>Packet Switching</strong> is best because: (1) The 50 MB file is broken into small packets — each travels the best available route. (2) Other employees can use the network simultaneously (bandwidth is shared, not dedicated). (3) TCP/IP reassembles packets in correct order at Delhi. Circuit switching would dedicate an entire line to one transfer — wasteful. Message switching would store the full 50 MB at each hop — slow."},
+  {q:"CASE: A remote village in the Himalayas needs internet connectivity. Laying cables through the mountainous terrain is extremely difficult and expensive. The government wants to provide reliable broadband access. Which transmission medium is MOST appropriate?",isCase:true,caseContext:"Himalayan village · No cable infrastructure · Mountainous terrain · Need broadband internet access",opts:["UTP cable — cheapest option","Optical Fibre — best speed","Satellite Communication — works over any terrain regardless of geography","Coaxial cable — durable"],ans:2,exp:"<strong>Satellite Communication</strong> is most appropriate because: (1) No cable installation needed — works over any terrain. (2) Large coverage area — one satellite covers a huge region. (3) Specifically useful where 'laying and maintaining intercontinental cable is difficult.' UTP/Coaxial/Fibre require physical cable infrastructure — impossible in mountainous terrain. Microwave would need towers on peaks (difficult). Satellite is the only viable option."},
+  {q:"CASE: A student uses their smartphone's Bluetooth to connect wireless earbuds, and also connects to the school WiFi network, which is part of a citywide cable internet service provided by their ISP. Identify the THREE different network types the student is simultaneously part of.",isCase:true,caseContext:"Student's setup: Bluetooth earbuds + School WiFi + City ISP internet connection",opts:["LAN, MAN, WAN only","PAN (Bluetooth earbuds) + LAN (school WiFi) + WAN (citywide internet from ISP)","Only WAN — since internet is involved","MAN + WAN only"],ans:1,exp:"The student is on THREE networks: (1) <strong>PAN</strong> — Bluetooth connects phone to earbuds within ~10 metres (personal area). (2) <strong>LAN</strong> — School WiFi is a Local Area Network within the campus. (3) <strong>WAN</strong> — The citywide ISP service connecting the school to the internet is a Wide Area Network. This shows how users routinely exist on multiple overlapping network types simultaneously."},
+  {q:"CASE: Two hospitals want to share patient records. Hospital A uses MAC addresses to deliver data within its building. Hospital B is in another city. When a doctor at Hospital A looks up a patient record from Hospital B, which address identifies Hospital B's server ON THE INTERNET, and which address delivers the data to the CORRECT COMPUTER within Hospital B's local network?",isCase:true,caseContext:"Hospital A (City 1) ↔ Hospital B (City 2) · Patient record retrieval across networks",opts:["MAC address for internet routing; IP address for local delivery","IP address routes data across the internet to Hospital B; MAC address delivers data to the correct computer within Hospital B's local network","Both IP addresses are used throughout","Both MAC addresses are used throughout"],ans:1,exp:"This is the key difference: <strong>IP address</strong> is the logical address used by TCP/IP to route data across networks — it takes the data from Hospital A through the internet to Hospital B's network. Once inside Hospital B's local network, the <strong>MAC address</strong> (physical, permanent address on the NIC) is used to deliver the data to the exact correct computer. IP = inter-network (logical, can change). MAC = intra-network (physical, permanent)."}
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = new Array(questions.length).fill(null);
+
+function buildQuiz() {
+  const container = document.getElementById('quizQuestions');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q' + (i===0?' active':'');
+    div.id = 'q'+i;
+    const letters = ['A','B','C','D'];
+    div.innerHTML = `
+      <div class="quiz-q-num">Question ${i+1} of 30${q.isCase?'<span class="case-badge">Case Study</span>':''}</div>
+      ${q.caseContext?`<div class="quiz-case-context">📋 ${q.caseContext}</div>`:''}
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt,j)=>`
+          <div class="quiz-opt" id="q${i}opt${j}" onclick="selectAnswer(${i},${j})">
+            <span class="quiz-opt-letter">${letters[j]}</span>
+            <span>${opt}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="quiz-explanation" id="q${i}exp"><strong>✓ Explanation:</strong> ${q.exp}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function selectAnswer(qi, optIdx) {
+  if (answered[qi] !== null) return;
+  answered[qi] = optIdx;
+  const correct = questions[qi].ans;
+  const opts = document.querySelectorAll(`#q${qi} .quiz-opt`);
+  opts.forEach((opt, i) => {
+    opt.classList.add('answered');
+    if (i === correct) opt.classList.add('correct');
+    else if (i === optIdx && optIdx !== correct) opt.classList.add('wrong');
+    else if (i !== correct) opt.classList.add('dim');
+  });
+  if (optIdx === correct) score++;
+  document.getElementById(`q${qi}exp`).classList.add('show');
+  document.getElementById('quizScore2').textContent = 'Score: ' + score;
+  updateProgress();
+}
+
+function nextQ() {
+  if (currentQ < questions.length - 1) {
+    document.getElementById('q'+currentQ).classList.remove('active');
+    currentQ++;
+    document.getElementById('q'+currentQ).classList.add('active');
+    updateUI();
+  } else {
+    showFinalScore();
+  }
+}
+
+function prevQ() {
+  if (currentQ > 0) {
+    document.getElementById('q'+currentQ).classList.remove('active');
+    currentQ--;
+    document.getElementById('q'+currentQ).classList.add('active');
+    updateUI();
+  }
+}
+
+function updateUI() {
+  document.getElementById('quizCounter').textContent = `Q${currentQ+1} of 30`;
+  document.getElementById('prevBtn').style.display = currentQ > 0 ? 'inline-flex' : 'none';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.textContent = currentQ === questions.length-1 ? 'Finish Quiz →' : 'Next →';
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = ((currentQ+1)/questions.length)*100;
+  document.getElementById('quizProgressFill').style.width = pct+'%';
+}
+
+function showFinalScore() {
+  document.querySelectorAll('.quiz-q').forEach(q => q.style.display='none');
+  document.getElementById('quizNav').style.display='none';
+  const wrongCount = answered.filter((a,i)=> a!==null && a!==questions[i].ans).length;
+  document.getElementById('quizFinalScore').classList.add('show');
+  document.getElementById('finalScoreNum').textContent = score;
+  document.getElementById('finalCorrect').textContent = score;
+  document.getElementById('finalWrong').textContent = wrongCount;
+  const pct = Math.round((score/questions.length)*100);
+  document.getElementById('finalPct').textContent = pct+'%';
+  let msg = '';
+  if (pct >= 90) msg = 'Outstanding! You have mastered Computer Networks Part 1. 🏆';
+  else if (pct >= 75) msg = 'Great work! A solid understanding. Review the questions you got wrong. 💪';
+  else if (pct >= 50) msg = 'Good effort. Go back through the sections you struggled with and try again. 📚';
+  else msg = 'Keep going! Use the Feynman cards above to build intuition, then retake the quiz. 🔁';
+  document.getElementById('scoreMessage').textContent = msg;
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0;
+  answered = new Array(questions.length).fill(null);
+  document.getElementById('quizFinalScore').classList.remove('show');
+  document.getElementById('quizNav').style.display='flex';
+  document.querySelectorAll('.quiz-q').forEach((q,i) => {
+    q.style.display='';
+    q.classList.toggle('active', i===0);
+  });
+  document.querySelectorAll('.quiz-opt').forEach(o => {
+    o.classList.remove('correct','wrong','dim','answered');
+  });
+  document.querySelectorAll('.quiz-explanation').forEach(e => e.classList.remove('show'));
+  document.getElementById('quizScore2').textContent = 'Score: 0';
+  updateUI();
+}
+
+buildQuiz();
+updateUI();
+
+// NAV active state on scroll
+const sections = document.querySelectorAll('section[id], div[id="basics"], div[id="types"], div[id="internet"], div[id="media"], div[id="topologies"], div[id="addressing"]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('[id]').forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+});
+</script>
+</body>
+</html>
